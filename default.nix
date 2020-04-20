@@ -33,6 +33,22 @@ let
       wrapProgram "$out/bin/$name" --set LC_ALL C
     '';
   };
+
+  tyrannical = pkgs.stdenv.mkDerivation {
+    name = "awesome-tyrannical";
+    phases = "installPhase";
+    src = pkgs.fetchFromGitHub {
+      owner = "Elv13";
+      repo = "tyrannical";
+      rev = "9c336ea0fd636e05d47856949e9a8a856590f254";
+      sha256 = "0j2k2bdrb7gyb8h8j5r4wr91wj3hzfw5mk74hh0dp7536fr41mnw";
+    };
+    installPhase = ''
+      DEST=$out/etc/lua/tyrannical
+      mkdir -p $DEST
+      cp -r $src/* $DEST
+    '';
+  };
 in
 
 # Finally, pack everything together
@@ -51,6 +67,7 @@ pkgs.symlinkJoin {
     wrapProgram "$out/bin/awesome" \
       --add-flags "--config ${awesome-config}/etc/awesome/entrypoint.lua" \
       --add-flags "--search ~/.config/awesome/src" \
-      --add-flags "--search ${awesome-config}/etc/awesome"
+      --add-flags "--search ${awesome-config}/etc/awesome" \
+      --add-flags "--search ${tyrannical}/etc/lua"
   '';
 }
