@@ -58,7 +58,7 @@ end
 local volume = require("widgets.volume-control") {
   device="pulse",
   step = '10%',
-  lclick = "pavucontrol",
+  lclick = config.audio_manager_program,
   rclick = "toggle",
   callback = function(self, setting)
     self.widget.text = "vol " .. pips_of_pct(setting.volume, setting.state == "off");
