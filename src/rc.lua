@@ -46,76 +46,10 @@ awful.layout.layouts = {
   awful.layout.suit.max,
 }
 
-local function pips_of_pct(number, disabled)
-  if number == 0 or disabled then return "off "
-  elseif number <= 25 then return "·";
-  elseif number <= 50 then return "··";
-  elseif number <= 75 then return "···";
-  else return "····";
-  end
-end
-
-local volume = require("widgets.volume-control") {
-  device="pulse",
-  step = '10%',
-  lclick = config.audio_manager_program,
-  rclick = "toggle",
-  callback = function(self, setting)
-    self.widget.text = "vol " .. pips_of_pct(setting.volume, setting.state == "off");
-  end
-}
-
-local brightness_widget = wibox.widget.textbox()
-local brightness = require("widgets.brightness")(config)
-
-local function format_brightness(widget, args)
-  local value = args["{value}"]
-  return "bl " .. pips_of_pct(value)
-end
-
-vicious.register(brightness_widget, brightness, format_brightness)
-
-local keyboard_layout_widget = wibox.widget.textbox()
-local keyboard_vicious_widget = require("./widgets/keyboard")(config)
-
-local keyboard_layout_name_mapping = {
-  ['us(dvp)'] = 'walrus-dvorak',
-  ['us'] = 'QWERTY',
-}
-
-local function keyboard_layout_name(raw_layout)
-  return keyboard_layout_name_mapping[raw_layout] or raw_layout
-end
-
-local keyboard_notification
-
-local function on_keyboard_change ()
-  awful.spawn.easy_async_with_shell(
-    config.read_layout_command,
-    function(stdout)
-      local layout = stdout.gsub(stdout, '[ \t\n\r]', '')
-
-      vicious.force({ keyboard_layout_widget })
-
-      if keyboard_notification then
-        naughty.destroy(keyboard_notification)
-        keyboard_notification = nil
-      end
-
-      keyboard_notification = naughty.notify({
-          title = 'Keyboard',
-          text = "Keyboard layout changed to " .. keyboard_layout_name(layout) .. "."
-      })
-    end
-  )
-end
-
-
-local function on_brightness_change()
-  vicious.force({ brightness_widget })
-end
-
 -- Functions to inject to other modules.
+
+local on_brightness_change
+local on_keyboard_change
 
 local props = {
   brightnessUp = function ()
@@ -175,6 +109,64 @@ local props = {
     awful.spawn("sp next")
   end
 }
+
+local function pips_of_pct(number, disabled)
+  if number == 0 or disabled then return "off "
+  elseif number <= 25 then return "·";
+  elseif number <= 50 then return "··";
+  elseif number <= 75 then return "···";
+  else return "····";
+  end
+end
+
+local volume = require("widgets.volume-control") {
+  device="pulse",
+  step = '10%',
+  lclick = config.audio_manager_program,
+  rclick = "toggle",
+  callback = function(self, setting)
+    self.widget.text = "vol " .. pips_of_pct(setting.volume, setting.state == "off");
+  end
+}
+
+local brightness_widget = wibox.widget.textbox()
+local brightness = require("widgets.brightness")(config)
+
+local function format_brightness(widget, args)
+  local value = args["{value}"]
+  return "bl " .. pips_of_pct(value)
+end
+
+vicious.register(brightness_widget, brightness, format_brightness)
+
+local keyboard_widget = require("./widgets/keyboard")(config, props)
+
+local keyboard_notification
+
+on_keyboard_change = function ()
+  awful.spawn.easy_async_with_shell(
+    config.read_layout_command,
+    function(stdout)
+      local layout = stdout.gsub(stdout, '[ \t\n\r]', '')
+
+      vicious.force({ keyboard_widget })
+
+      if keyboard_notification then
+        naughty.destroy(keyboard_notification)
+        keyboard_notification = nil
+      end
+
+      keyboard_notification = naughty.notify({
+          title = 'Keyboard',
+          text = "Keyboard layout changed to " .. layout .. "."
+      })
+    end
+  )
+end
+
+on_brightness_change = function()
+  vicious.force({ brightness_widget })
+end
 
 local keybindings = require('./keybindings')(config, props)
 root.keys(keybindings.global)
@@ -360,24 +352,6 @@ local has_wifi = os.execute("cat /proc/net/wireless")
 local has_battery = os.execute("upower -e | grep -i battery")
 
 
-keyboard_layout_widget:buttons(
-  awful.util.table.join(
-    awful.button({ }, 1, props.toggleKeyboardLayout)
-  )
-)
-
-local function format_keyboard(widget, args)
-  local layout = keyboard_layout_name(args["{layout}"])
-  if layout == 'walrus-dvorak' then
-    return ''
-  else
-    return ' <span foreground="black" background="orange"> <b>' .. layout .. '</b> </span>'
-  end
-end
-
-vicious.register(keyboard_layout_widget, keyboard_vicious_widget, format_keyboard)
-
-
 local function padding(factor)
   return wibox.widget {
     orientation = "vertical",
@@ -418,7 +392,7 @@ awful.screen.connect_for_each_screen(function(s)
         brightness_widget,
         has_wifi and padding(),
         has_wifi and wifi,
-        keyboard_layout_widget,
+        keyboard_widget,
         has_battery and padding(2),
         has_battery and battery,
         has_battery and padding(),
