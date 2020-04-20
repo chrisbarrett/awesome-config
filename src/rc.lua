@@ -124,7 +124,7 @@ local volume = require("widgets.volume-control") {
 
 local brightness = require("widgets.brightness")(config, props)
 
-local keyboard_layout = require("./widgets/keyboard")(config, props)
+local keyboard_layout = require("widgets.keyboard")(config, props)
 
 on_keyboard_change = function ()
   keyboard_layout.notify()
