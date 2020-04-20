@@ -1,7 +1,6 @@
 local awful = require("awful")
 local gears = require("gears")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
-local menubar = require("menubar")
 
 local shift = "Shift"
 local ctrl = "Control"
