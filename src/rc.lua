@@ -52,6 +52,7 @@ awful.layout.layouts = {
 
 local on_brightness_change
 local on_keyboard_change
+local volume
 
 local props = {
   brightnessUp = function ()
@@ -112,8 +113,8 @@ local props = {
   end
 }
 
-local volume = require("widgets.volume-control") {
-  device="pulse",
+volume = require("widgets.volume-control") {
+  device = "pulse",
   step = '10%',
   lclick = config.audio_manager_program,
   rclick = "toggle",
