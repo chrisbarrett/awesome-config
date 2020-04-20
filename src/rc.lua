@@ -14,12 +14,30 @@ local beautiful = require("beautiful")
 require("awful.autofocus")
 require("awful.hotkeys_popup.keys")
 
-require('./signals')
-
 local theme = require('./theme')(config)
 beautiful.init(theme)
 
--- Tweakable configuration knobs.
+-- Prevent clients from being unreachable after screen count changes.
+client.connect_signal(
+  "manage",
+  function (c)
+    if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
+      awful.placement.no_offscreen(c)
+    end
+end)
+
+client.connect_signal(
+  "focus",
+  function(c)
+    c.border_color = theme.border_focus
+end)
+
+client.connect_signal(
+  "unfocus",
+  function(c)
+    c.border_color = theme.border_normal
+end)
+
 
 
 -- Variable definitions

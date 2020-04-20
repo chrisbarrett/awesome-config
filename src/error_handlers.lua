@@ -41,4 +41,5 @@ end
 -- Handle runtime errors after startup
 awesome.connect_signal(
   "debug::error",
-  function (err) notify_error("Error in AwesomeWM configuration", err) end)
+  function (err) notify_error("Error in AwesomeWM configuration", err) end
+)
