@@ -1,3 +1,5 @@
+return function(config)
+
 require("./error_handlers")
 
 local awful = require("awful")
@@ -17,11 +19,7 @@ require("awful.hotkeys_popup.keys")
 
 require('./signals')
 
-local function awesome_dir(path)
-  return os.getenv("HOME") .. "/.config/awesome/" .. path
-end
-
-beautiful.init(awesome_dir("themes/default/theme.lua"))
+beautiful.init(config.theme_path)
 beautiful.border_focus = "#dfaaaa"
 beautiful.border_normal = "#505050"
 beautiful.font = default_font
@@ -32,24 +30,7 @@ beautiful.hotkeys_description_font = beautiful.font
 beautiful.hotkeys_modifiers_fg = "#a77"
 beautiful.hotkeys_group_margin = 20
 
-local function nix_bin(cmd, args)
-  return os.getenv("HOME") .. '/.nix-profile/bin/' .. cmd .. ' ' .. (args or '')
-end
-
 -- Tweakable configuration knobs.
-
-local config = {
-  editor_command = nix_bin('emacsclient', '--create-frame --alternate-editor=emacs'),
-  fs_browser = 'nautilus',
-  launcher_command = nix_bin('rofi', '-show run'),
-  modkey = 'Mod4',
-  terminal_command = 'gnome-terminal',
-  wifi_manager_command = 'nm-connection-editor',
-  toggle_keyboard_command = '.local/bin/keyboard-toggle',
-  set_keyboard_qwerty = '.local/bin/keyboard-qwerty',
-  set_keyboard_dvorak = '.local/bin/keyboard-dvorak',
-  read_layout_command = ".local/bin/keyboard-show",
-}
 
 
 -- Variable definitions
@@ -441,3 +422,5 @@ end)
 
 -- Make sure we reload the xprofile so that keyboard repeat settings are loaded.
 awful.spawn.with_shell('~/.xprofile')
+
+end
