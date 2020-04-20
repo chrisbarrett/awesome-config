@@ -31,8 +31,6 @@ function init_widget(config, props)
         local layout = stdout.gsub(stdout, '[ \t\n\r]', '')
         layout = layouts[layout] or layout
 
-        vicious.force({ widget })
-
         if notification then
           naughty.destroy(notification)
           notification = nil

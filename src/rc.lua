@@ -122,24 +122,17 @@ local volume = require("widgets.volume-control") {
   end
 }
 
-local brightness_widget = wibox.widget.textbox()
-local brightness = require("widgets.brightness")(config)
-
-local function format_brightness(widget, args)
-  local value = args["{value}"]
-  return "bl " .. utils.pips_of_pct(value)
-end
-
-vicious.register(brightness_widget, brightness, format_brightness)
+local brightness = require("widgets.brightness")(config, props)
 
 local keyboard_layout = require("./widgets/keyboard")(config, props)
 
 on_keyboard_change = function ()
   keyboard_layout.notify()
+  vicious.force({ keyboard_layout })
 end
 
 on_brightness_change = function()
-  vicious.force({ brightness_widget })
+  vicious.force({ brightness })
 end
 
 local keybindings = require('./keybindings')(config, props)
@@ -363,7 +356,7 @@ awful.screen.connect_for_each_screen(function(s)
         padding(),
         volume.widget,
         padding(),
-        brightness_widget,
+        brightness,
         has_wifi and padding(),
         has_wifi and wifi,
         keyboard_layout,
