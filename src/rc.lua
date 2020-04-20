@@ -65,13 +65,15 @@ local volume = require("widgets.volume-control") {
   end
 }
 
-local brightness = require("widgets.brightness") {
-  step = '10%',
-  cmd = config.xbacklight_path,
-  callback = function(self, brightness)
-    self.widget.text = "bl " .. pips_of_pct(brightness);
-  end
-}
+local brightness_widget = wibox.widget.textbox()
+local brightness = require("widgets.brightness")(config)
+
+local function format_brightness(widget, args)
+  local value = args["{value}"]
+  return "bl " .. pips_of_pct(value)
+end
+
+vicious.register(brightness_widget, brightness, format_brightness)
 
 local keyboard_layout_widget = wibox.widget.textbox()
 local keyboard_vicious_widget = require("./widgets/keyboard")(config)
@@ -109,14 +111,24 @@ local function on_keyboard_change ()
 end
 
 
+local function on_brightness_change()
+  vicious.force({ brightness_widget })
+end
+
 -- Functions to inject to other modules.
 
 local props = {
   brightnessUp = function ()
-    brightness:up()
+    awful.spawn.easy_async_with_shell(
+      config.xbacklight_path .. " -inc 10%",
+      on_brightness_change
+    )
   end,
   brightnessDown = function ()
-    brightness:down()
+    awful.spawn.easy_async_with_shell(
+      config.xbacklight_path .. " -dec 10%",
+      on_brightness_change
+    )
   end,
   openEditor = function ()
     awful.spawn(config.editor_command)
@@ -403,7 +415,7 @@ awful.screen.connect_for_each_screen(function(s)
         padding(),
         volume.widget,
         padding(),
-        brightness.widget,
+        brightness_widget,
         has_wifi and padding(),
         has_wifi and wifi,
         keyboard_layout_widget,
