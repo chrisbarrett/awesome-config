@@ -3,13 +3,12 @@ return function(config)
 require("./error_handlers")
 
 local awful = require("awful")
+local beautiful = require("beautiful")
 local gears = require("gears")
-local hotkeys_popup = require("awful.hotkeys_popup").widget
 local menubar = require("menubar")
 local naughty = require("naughty")
 local vicious = require('vicious')
 local wibox = require("wibox")
-local beautiful = require("beautiful")
 
 require("awful.autofocus")
 require("awful.hotkeys_popup.keys")
