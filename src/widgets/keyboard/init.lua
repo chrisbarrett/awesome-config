@@ -1,7 +1,10 @@
 local awful = require("awful")
 local helpers = require("vicious.helpers")
 local vicious = require('vicious')
+local naughty = require('naughty')
 local wibox = require('wibox')
+
+local notification
 
 local layouts = {
   ['us(dvp)'] = 'walrus-dvorak',
@@ -20,6 +23,28 @@ end
 
 function init_widget(config, props)
   local widget = wibox.widget.textbox()
+
+  widget.notify = function()
+    awful.spawn.easy_async_with_shell(
+      config.read_layout_command,
+      function(stdout)
+        local layout = stdout.gsub(stdout, '[ \t\n\r]', '')
+        layout = layouts[layout] or layout
+
+        vicious.force({ widget })
+
+        if notification then
+          naughty.destroy(notification)
+          notification = nil
+        end
+
+        notification = naughty.notify {
+          title = 'Keyboard',
+          text = "Keyboard layout changed to " .. layout .. "."
+        }
+      end
+    )
+  end
 
   widget:buttons(
     awful.util.table.join(

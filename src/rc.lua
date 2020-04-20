@@ -141,27 +141,8 @@ vicious.register(brightness_widget, brightness, format_brightness)
 
 local keyboard_widget = require("./widgets/keyboard")(config, props)
 
-local keyboard_notification
-
 on_keyboard_change = function ()
-  awful.spawn.easy_async_with_shell(
-    config.read_layout_command,
-    function(stdout)
-      local layout = stdout.gsub(stdout, '[ \t\n\r]', '')
-
-      vicious.force({ keyboard_widget })
-
-      if keyboard_notification then
-        naughty.destroy(keyboard_notification)
-        keyboard_notification = nil
-      end
-
-      keyboard_notification = naughty.notify({
-          title = 'Keyboard',
-          text = "Keyboard layout changed to " .. layout .. "."
-      })
-    end
-  )
+  keyboard_widget.notify()
 end
 
 on_brightness_change = function()
