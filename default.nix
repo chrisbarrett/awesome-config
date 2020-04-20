@@ -60,10 +60,7 @@ in
 symlinkJoin {
   name = "awesomewm-with-config";
   buildInputs = [makeWrapper];
-  paths = [
-    awesome
-    xorg.xbacklight
-  ];
+  paths = [awesome];
 
   # Wrap configuration so that we attempt to resolve modules from
   # ~/.config/awesome/src, falling back to the config packed into the store.

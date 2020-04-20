@@ -67,6 +67,7 @@ local volume = require("widgets.volume-control") {
 
 local brightness = require("widgets.brightness") {
   step = '10%',
+  cmd = config.xbacklight_path,
   callback = function(self, brightness)
     self.widget.text = "bl " .. pips_of_pct(brightness);
   end

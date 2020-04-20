@@ -6,6 +6,7 @@ end
 
 local config = {
   audio_manager_program = '${pkgs.pavucontrol}/bin/pavucontrol',
+  xbacklight_path = '${pkgs.xorg.xbacklight}/bin/xbacklight',
   desktop_picture = '${./assets/desktop.png}',
   editor_command = nix_bin('emacsclient', '--create-frame --alternate-editor=emacs'),
   fs_browser = 'nautilus',

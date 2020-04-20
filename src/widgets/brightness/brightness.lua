@@ -60,7 +60,7 @@ function vcontrol:new(args)
 end
 
 function vcontrol:init(args)
-    self.cmd = "xbacklight"
+    self.cmd = args.cmd
     self.step = args.step or '5'
     self.callback = args.callback
 
