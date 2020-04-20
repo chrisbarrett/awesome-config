@@ -127,7 +127,7 @@ local props = {
     awful.spawn(config.terminal_command)
   end,
   openLauncher = function()
-    awful.util.spawn(config.launcher_command)
+    awful.spawn(config.launcher_command)
   end,
   volumeUp = function()
     volume:unmute()
@@ -153,13 +153,13 @@ local props = {
     awful.spawn.easy_async_with_shell(config.toggle_keyboard_command, on_keyboard_change)
   end,
   prevSong = function()
-    awful.util.spawn("sp prev")
+    awful.spawn("sp prev")
   end,
   playPauseSong = function()
-    awful.util.spawn("sp play")
+    awful.spawn("sp play")
   end,
   nextSong = function()
-    awful.util.spawn("sp next")
+    awful.spawn("sp next")
   end
 }
 
