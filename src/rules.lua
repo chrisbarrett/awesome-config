@@ -3,11 +3,7 @@
 local awful = require("awful")
 local beautiful = require("beautiful")
 local gears = require("gears")
-local hotkeys_popup = require("awful.hotkeys_popup").widget
-local menubar = require("menubar")
-local naughty = require("naughty")
 local tyrannical = require('tyrannical')
-local wibox = require("wibox")
 
 tyrannical.settings.default_layout = awful.layout.suit.tile
 tyrannical.settings.master_width_factor = 0.6
