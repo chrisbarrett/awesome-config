@@ -1,4 +1,4 @@
-{ pkgs, scripts }: ''
+{ pkgs, scripts, rofi }: ''
 
 local function nix_bin(cmd, args)
   return os.getenv("HOME") .. '/.nix-profile/bin/' .. cmd .. " " .. (args or "")
@@ -12,7 +12,7 @@ local config = {
   theme_path = awesome_dir("themes/default/theme.lua"),
   editor_command = nix_bin('emacsclient', '--create-frame --alternate-editor=emacs'),
   fs_browser = 'nautilus',
-  launcher_command = '${pkgs.rofi}/bin/rofi -show run',
+  launcher_command = '${rofi}/bin/rofi -show run',
   modkey = 'Mod4',
   terminal_command = 'gnome-terminal',
   wifi_manager_command = 'nm-connection-editor',
