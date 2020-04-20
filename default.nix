@@ -1,9 +1,9 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> {} }: with pkgs;
 
 let
   # Materialise a bridging config file so pkgs required by the config are installed and available.
 
-  entrypoint = with pkgs; writeText "awesome-entrypoint-lua" (
+  entrypoint = writeText "awesome-entrypoint-lua" (
     callPackage ./entrypoint.lua.nix {
       inherit pkgs;
       scripts = callPackage ./scripts.nix {};
@@ -11,9 +11,18 @@ let
     }
   );
 
+  withCLocale = pkg: name: pkgs.symlinkJoin {
+    inherit name;
+    paths = [pkg];
+    buildInputs = [makeWrapper];
+    postBuild = ''
+      wrapProgram "$out/bin/$name" --set LC_ALL C
+    '';
+  };
+
   # Expose lua config files at $out/etc/awesome.
 
-  awesome-config = pkgs.stdenv.mkDerivation {
+  awesome-config = stdenv.mkDerivation {
     name = "awesome-config";
     phases = "installPhase";
     src = ./src;
@@ -25,14 +34,6 @@ let
     '';
   };
 
-  withCLocale = pkg: name: pkgs.symlinkJoin {
-    inherit name;
-    paths = [pkg];
-    buildInputs = [pkgs.makeWrapper];
-    postBuild = ''
-      wrapProgram "$out/bin/$name" --set LC_ALL C
-    '';
-  };
 
   tyrannical = pkgs.stdenv.mkDerivation {
     name = "awesome-tyrannical";
@@ -53,14 +54,14 @@ in
 
 # Finally, pack everything together
 
-pkgs.symlinkJoin {
+symlinkJoin {
   name = "awesomewm-with-config";
-  buildInputs = [pkgs.makeWrapper];
+  buildInputs = [makeWrapper];
   paths = [
-    pkgs.awesome
-    pkgs.xorg.xbacklight
-    awesome-config
+    awesome
+    xorg.xbacklight
   ];
+
   # Wrap configuration so that we attempt to resolve modules from
   # ~/.config/awesome/src, falling back to the config packed into the store.
   postBuild = ''
