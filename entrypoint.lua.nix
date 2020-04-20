@@ -4,12 +4,8 @@ local function nix_bin(cmd, args)
   return os.getenv("HOME") .. '/.nix-profile/bin/' .. cmd .. " " .. (args or "")
 end
 
-local function awesome_dir(path)
-  return os.getenv("HOME") .. "/.config/awesome/src/" .. path
-end
-
 local config = {
-  theme_path = awesome_dir("themes/default/theme.lua"),
+  desktop_picture = '${./assets/desktop.png}',
   editor_command = nix_bin('emacsclient', '--create-frame --alternate-editor=emacs'),
   fs_browser = 'nautilus',
   launcher_command = '${rofi}/bin/rofi -show run',

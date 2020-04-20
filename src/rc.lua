@@ -3,32 +3,21 @@ return function(config)
 require("./error_handlers")
 
 local awful = require("awful")
-local beautiful = require("beautiful")
 local gears = require("gears")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local menubar = require("menubar")
 local naughty = require("naughty")
 local vicious = require('vicious')
 local wibox = require("wibox")
-
-local default_font = "Ubuntu Mono"
-local font_mono = "Ubuntu Mono"
+local beautiful = require("beautiful")
 
 require("awful.autofocus")
 require("awful.hotkeys_popup.keys")
 
 require('./signals')
 
-beautiful.init(config.theme_path)
-beautiful.border_focus = "#dfaaaa"
-beautiful.border_normal = "#505050"
-beautiful.font = default_font
-beautiful.tasklist_plain_task_name = true
-
-beautiful.hotkeys_font = beautiful.font
-beautiful.hotkeys_description_font = beautiful.font
-beautiful.hotkeys_modifiers_fg = "#a77"
-beautiful.hotkeys_group_margin = 20
+local theme = require('./theme')(config)
+beautiful.init(theme)
 
 -- Tweakable configuration knobs.
 
@@ -55,7 +44,6 @@ local volume = require("widgets.volume-control") {
   lclick = "pavucontrol",
   rclick = "toggle",
   callback = function(self, setting)
-    self.widget.font = font_mono;
     self.widget.text = "vol " .. pips_of_pct(setting.volume, setting.state == "off");
   end
 }
@@ -63,7 +51,6 @@ local volume = require("widgets.volume-control") {
 local brightness = require("widgets.brightness") {
   step = '10%',
   callback = function(self, brightness)
-    self.widget.font = font_mono;
     self.widget.text = "bl " .. pips_of_pct(brightness);
   end
 }
@@ -226,14 +213,13 @@ local tasklist_buttons = gears.table.join(
 end))
 
 local function set_wallpaper(s)
-  gears.wallpaper.maximized(beautiful.wallpaper, s, true)
+  gears.wallpaper.maximized(config.desktop_picture, s, true)
 end
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
 local battery = require("widgets.battery") {
-  widget_font = font_mono,
   widget_text = "${color_on}${AC_BAT}${color_off}",
   ac_prefix = {
     { 30,  " ·   " },
@@ -256,7 +242,6 @@ local battery = require("widgets.battery") {
 }
 
 local mail = wibox.widget.textbox()
-mail.font = font_mono
 
 local function format_mail(widget, args)
   local new = args[1]
@@ -278,7 +263,6 @@ end
 pcall(set_up_mail)
 
 local org = wibox.widget.textbox()
-org.font = font_mono
 org.tooltip = awful.tooltip { objects={org} }
 
 local function format_org(widget, args)
@@ -327,7 +311,6 @@ wifi:buttons(
   )
 )
 
-wifi.font = font_mono
 wifi.tooltip = awful.tooltip { objects={wifi} }
 
 local function format_wifi(widget, args)
@@ -344,13 +327,10 @@ end
 vicious.register(wifi, vicious.widgets.wifi, format_wifi, 3, "wlo1")
 
 local clock = wibox.widget.textclock()
-clock.font = font_mono
 
 local has_wifi = os.execute("cat /proc/net/wireless")
 local has_battery = os.execute("upower -e | grep -i battery")
 
-
-keyboard_layout_widget.font = font_mono
 
 keyboard_layout_widget:buttons(
   awful.util.table.join(
