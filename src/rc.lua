@@ -132,10 +132,10 @@ end
 
 vicious.register(brightness_widget, brightness, format_brightness)
 
-local keyboard_widget = require("./widgets/keyboard")(config, props)
+local keyboard_layout = require("./widgets/keyboard")(config, props)
 
 on_keyboard_change = function ()
-  keyboard_widget.notify()
+  keyboard_layout.notify()
 end
 
 on_brightness_change = function()
@@ -366,7 +366,7 @@ awful.screen.connect_for_each_screen(function(s)
         brightness_widget,
         has_wifi and padding(),
         has_wifi and wifi,
-        keyboard_widget,
+        keyboard_layout,
         has_battery and padding(2),
         has_battery and battery,
         has_battery and padding(),
