@@ -13,6 +13,8 @@ local wibox = require("wibox")
 require("awful.autofocus")
 require("awful.hotkeys_popup.keys")
 
+local utils = require('./utils')
+
 local theme = require('./theme')(config)
 beautiful.init(theme)
 
@@ -110,22 +112,13 @@ local props = {
   end
 }
 
-local function pips_of_pct(number, disabled)
-  if number == 0 or disabled then return "off "
-  elseif number <= 25 then return "·";
-  elseif number <= 50 then return "··";
-  elseif number <= 75 then return "···";
-  else return "····";
-  end
-end
-
 local volume = require("widgets.volume-control") {
   device="pulse",
   step = '10%',
   lclick = config.audio_manager_program,
   rclick = "toggle",
   callback = function(self, setting)
-    self.widget.text = "vol " .. pips_of_pct(setting.volume, setting.state == "off");
+    self.widget.text = "vol " .. utils.pips_of_pct(setting.volume, setting.state == "off");
   end
 }
 
@@ -134,7 +127,7 @@ local brightness = require("widgets.brightness")(config)
 
 local function format_brightness(widget, args)
   local value = args["{value}"]
-  return "bl " .. pips_of_pct(value)
+  return "bl " .. utils.pips_of_pct(value)
 end
 
 vicious.register(brightness_widget, brightness, format_brightness)
@@ -319,7 +312,7 @@ local function format_wifi(widget, args)
   local strength = args["{linp}"]
   widget.tooltip.text = "SSID: " .. ssid .. "\n" .. "Strength: " .. strength .. "%"
   if ssid then
-    return "wifi " .. pips_of_pct(strength)
+    return "wifi " .. utils.pips_of_pct(strength)
   else
     return ""
   end
