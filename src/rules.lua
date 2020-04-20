@@ -89,9 +89,9 @@ tyrannical.properties.floating = {
 }
 
 tyrannical.properties.placement = {
-  ["gcr-prompter"] = awful.placement.center,
-  ["nm-connection-editor"] = awful.placement.center,
-  ["pavucontrol"] = awful.placement.center,
+  ["gcr-prompter"] = awful.placement.centered,
+  ["nm-connection-editor"] = awful.placement.centered,
+  ["pavucontrol"] = awful.placement.centered,
 }
 
 tyrannical.properties.size_hints_honor = {
