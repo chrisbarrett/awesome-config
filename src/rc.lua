@@ -164,8 +164,6 @@ local props = {
   end
 }
 
-menubar.utils.terminal = config.terminal_command
-
 local keybindings = require('./keybindings')(config, props)
 root.keys(keybindings.global)
 awful.rules.rules = require('./rules')(config, keybindings)
