@@ -1,0 +1,28 @@
+#+TITLE: Awesome Config
+
+My personal Awesome WM configuration. Nix is used to build an Awesome WM with
+the config bundled in and required 3rd-party Lua libs and programs included.
+
+* Installation
+The derivation can be imported into a NixOS or home-manager configuration using
+the usual mechanisms.
+
+#+begin_src nix
+  { pkgs, ... }:
+  {
+    nixpkgs.overlays = [
+      (self: super:
+      {
+        awesomeWithConfig = builtins.fetchTarball rec {
+          rev = "master";
+          url = "https://github.com/chrisbarrett/awesome-config/archive/${rev}.tar.gz";
+        };
+      })
+    ];
+
+    xsession.windowManager.awesome = {
+      enable = true;
+      package = awesomeWithConfig;
+    };
+  }
+#+end_src
