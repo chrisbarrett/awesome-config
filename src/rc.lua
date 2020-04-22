@@ -1,5 +1,3 @@
-require("./error_handlers")
-
 local awful = require("awful")
 local beautiful = require("beautiful")
 local gears = require("gears")
@@ -22,17 +20,6 @@ awful.layout.layouts = {
 local function orgfile(name)
   return os.getenv("HOME") .. "/Dropbox/org/" .. name .. ".org"
 end
-
--- Prevent clients from being unreachable after screen count changes.
-client.connect_signal(
-  "manage",
-  function (c)
-    if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
-      awful.placement.no_offscreen(c)
-    end
-  end
-)
-
 
 return function (config)
   local hooks = {
@@ -240,9 +227,4 @@ return function (config)
         },
       }
   end)
-
-
-  -- Make sure we reload the xprofile so that keyboard repeat settings are loaded.
-  awful.spawn.with_shell('~/.xprofile')
-
 end
