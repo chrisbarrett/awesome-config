@@ -141,8 +141,8 @@ return function (config)
   local keyboard_layout = require("widgets.keyboard")(config, props)
 
   on_keyboard_change = function ()
-    keyboard_layout.notify()
     vicious.force({ keyboard_layout })
+    keyboard_layout.notify()
   end
 
   on_brightness_change = function()
