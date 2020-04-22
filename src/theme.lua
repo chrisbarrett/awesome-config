@@ -17,7 +17,7 @@ return function(config)
     fg_urgent     = "#ffffff",
     fg_minimize   = "#ffffff",
 
-    useless_gap   = dpi(0),
+    useless_gap   = dpi(10),
     border_width  = dpi(1),
     border_normal = "#505050",
     border_focus  = "#dfaaaa",
