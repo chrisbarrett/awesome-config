@@ -11,7 +11,7 @@ local layouts = {
   ['us'] = 'QWERTY',
 }
 
-local function format_keyboard(widget, args)
+local function render(widget, args)
   local layout = layouts[args["{layout}"]]
 
   if layout == 'walrus-dvorak' then
@@ -62,7 +62,7 @@ return function (config, props)
     end
   }
 
-  vicious.register(widget, vwidget, format_keyboard)
+  vicious.register(widget, vwidget, render)
 
   return widget
 end
