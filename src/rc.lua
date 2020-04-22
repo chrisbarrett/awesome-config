@@ -35,6 +35,14 @@ client.connect_signal(
 
 
 return function (config)
+  local hooks = {
+    brightness_changed = {},
+    keyboard_changed = {},
+    volume_changed = {},
+  }
+
+  local props = require('props')(config, hooks)
+
   config.org_files = {
     orgfile("personal"),
     orgfile("personal_recurring"),
@@ -46,74 +54,7 @@ return function (config)
   client.connect_signal("focus", function(c) c.border_color = theme.border_focus end)
   client.connect_signal("unfocus", function(c) c.border_color = theme.border_normal end)
 
-  -- Variable definitions
-
-  -- Functions to inject to other modules.
-
-  local on_brightness_change
-  local on_keyboard_change
-  local volume
-
-  local props = {
-    brightnessUp = function ()
-      awful.spawn.easy_async_with_shell(
-        config.xbacklight_path .. " -inc 10%",
-        on_brightness_change
-      )
-    end,
-    brightnessDown = function ()
-      awful.spawn.easy_async_with_shell(
-        config.xbacklight_path .. " -dec 10%",
-        on_brightness_change
-      )
-    end,
-    openEditor = function ()
-      awful.spawn(config.editor_command)
-    end,
-    openFSBrowser = function ()
-      awful.spawn(config.fs_browser)
-    end,
-    openTerminal = function ()
-      awful.spawn(config.terminal_command)
-    end,
-    openLauncher = function()
-      awful.spawn(config.launcher_command)
-    end,
-    volumeUp = function()
-      volume:unmute()
-      volume:up()
-    end,
-    volumeDown = function()
-      volume:unmute()
-      volume:down()
-    end,
-    toggleMute = function()
-      volume:toggle()
-    end,
-    openWifiManager = function ()
-      awful.spawn(config.wifi_manager_command)
-    end,
-    setKeyboardLayoutDvorak = function ()
-      awful.spawn.easy_async_with_shell(config.set_keyboard_dvorak, on_keyboard_change)
-    end,
-    setKeyboardLayoutQwerty = function ()
-      awful.spawn.easy_async_with_shell(config.set_keyboard_qwerty, on_keyboard_change)
-    end,
-    toggleKeyboardLayout = function ()
-      awful.spawn.easy_async_with_shell(config.toggle_keyboard_command, on_keyboard_change)
-    end,
-    prevSong = function()
-      awful.spawn("sp prev")
-    end,
-    playPauseSong = function()
-      awful.spawn("sp play")
-    end,
-    nextSong = function()
-      awful.spawn("sp next")
-    end
-  }
-
-  volume = require("widgets.volume-control") {
+  local volume = require("widgets.volume-control") {
     device = "pulse",
     step = '10%',
     lclick = config.audio_manager_program,
@@ -123,18 +64,39 @@ return function (config)
     end
   }
 
+  table.insert(
+    hooks.volume_changed,
+    function(value)
+      if value == 1 then
+        volume:unmute()
+        volume:up()
+      elseif value == -1 then
+        volume:unmute()
+        volume:down()
+      else
+        volume:toggle()
+      end
+    end
+  )
+
   local brightness = require("widgets.brightness")(config, props)
 
-  local keyboard_layout = require("widgets.keyboard")(config, props)
+  table.insert(
+    hooks.brightness_changed,
+    function()
+      vicious.force({ brightness })
+    end
+  )
 
-  on_keyboard_change = function ()
-    vicious.force({ keyboard_layout })
-    keyboard_layout.notify()
-  end
+  local keyboard = require("widgets.keyboard")(config, props)
 
-  on_brightness_change = function()
-    vicious.force({ brightness })
-  end
+  table.insert(
+    hooks.keyboard_changed,
+    function (value)
+      vicious.force({ keyboard })
+      keyboard.notify(value)
+    end
+  )
 
   local keybindings = require('./keybindings')(config, props)
   root.keys(keybindings.global)
@@ -270,7 +232,7 @@ return function (config)
           brightness,
           wifi and padding,
           wifi,
-          keyboard_layout,
+          keyboard,
           battery and padding.times(2),
           battery,
           battery and padding,
