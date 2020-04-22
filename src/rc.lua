@@ -9,7 +9,6 @@ local wibox = require("wibox")
 require("awful.autofocus")
 require("awful.hotkeys_popup.keys")
 
-local make_theme = require('theme')
 local utils = require('./utils')
 
 awful.layout.layouts = {
@@ -35,7 +34,7 @@ return function (config)
     orgfile("personal_recurring"),
   }
 
-  local theme = make_theme(config)
+  local theme = require('theme')(config)
   beautiful.init(theme)
 
   client.connect_signal("focus", function(c) c.border_color = theme.border_focus end)
