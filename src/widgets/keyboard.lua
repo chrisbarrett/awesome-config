@@ -21,27 +21,35 @@ local function render(widget, args)
   end
 end
 
+local function show_notification(layout)
+    layout = layouts[layout] or layout
+
+    if notification then
+      naughty.destroy(notification)
+      notification = nil
+    end
+
+    notification = naughty.notify {
+      title = 'Keyboard',
+      text = "Keyboard layout changed to " .. layout .. "."
+    }
+end
+
 return function (config, props)
   local widget = wibox.widget.textbox()
 
-  widget.notify = function()
-    awful.spawn.easy_async_with_shell(
-      config.read_layout_command,
-      function(stdout)
-        local layout = stdout.gsub(stdout, '[ \t\n\r]', '')
-        layout = layouts[layout] or layout
-
-        if notification then
-          naughty.destroy(notification)
-          notification = nil
+  function widget.notify(value)
+    if value then
+      show_notification(layout)
+    else
+      awful.spawn.easy_async_with_shell(
+        config.read_layout_command,
+        function(stdout)
+          local layout = stdout.gsub(stdout, '[ \t\n\r]', '')
+          show_notification(layout)
         end
-
-        notification = naughty.notify {
-          title = 'Keyboard',
-          text = "Keyboard layout changed to " .. layout .. "."
-        }
-      end
-    )
+      )
+    end
   end
 
   widget:buttons(
