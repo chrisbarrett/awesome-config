@@ -277,8 +277,6 @@ return function (config)
 
   local has_org_files = pcall(configure_org_widget)
 
-  local clock = wibox.widget.textclock()
-
   local has_wifi = os.execute("cat /proc/net/wireless")
   local wifi = has_wifi and require('widgets.wifi')(config, props)
 
@@ -323,7 +321,7 @@ return function (config)
           battery and padding.times(2),
           battery,
           battery and padding,
-          clock,
+          wibox.widget.textclock(),
         },
       }
   end)
