@@ -110,7 +110,7 @@ function fewer_columns()
   awful.tag.incncol(-1, nil, true)
 end
 
-function init_keybindings(config, props)
+return function (config, props)
   local mod = config.modkey
 
   local global = gears.table.join(
@@ -264,5 +264,3 @@ function init_keybindings(config, props)
 
   return { global = global, client = client }
 end
-
-return init_keybindings
