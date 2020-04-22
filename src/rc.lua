@@ -291,34 +291,12 @@ end
 
 local has_org_files = pcall(configure_org_widget)
 
-local wifi = wibox.widget.textbox()
-
-wifi:buttons(
-  awful.util.table.join(
-    awful.button({ }, 1, props.openWifiManager)
-  )
-)
-
-wifi.tooltip = awful.tooltip { objects={wifi} }
-
-local function format_wifi(widget, args)
-  local ssid = args["{ssid}"]
-  local strength = args["{linp}"]
-  widget.tooltip.text = "SSID: " .. ssid .. "\n" .. "Strength: " .. strength .. "%"
-  if ssid then
-    return "wifi " .. utils.pips_of_pct(strength)
-  else
-    return ""
-  end
-end
-
-vicious.register(wifi, vicious.widgets.wifi, format_wifi, 3, "wlo1")
-
 local clock = wibox.widget.textclock()
 
 local has_wifi = os.execute("cat /proc/net/wireless")
 local has_battery = os.execute("upower -e | grep -i battery")
 
+local wifi = require('widgets.wifi')(config, props)
 
 local function padding(factor)
   return wibox.widget {
