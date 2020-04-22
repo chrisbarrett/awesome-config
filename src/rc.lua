@@ -43,21 +43,8 @@ return function (config)
   local theme = make_theme(config)
   beautiful.init(theme)
 
-  client.connect_signal(
-    "focus",
-    function(c)
-      c.border_color = theme.border_focus
-    end
-  )
-
-  client.connect_signal(
-    "unfocus",
-    function(c)
-      c.border_color = theme.border_normal
-    end
-  )
-
-
+  client.connect_signal("focus", function(c) c.border_color = theme.border_focus end)
+  client.connect_signal("unfocus", function(c) c.border_color = theme.border_normal end)
 
   -- Variable definitions
 
