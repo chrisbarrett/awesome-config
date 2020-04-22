@@ -195,7 +195,7 @@ return function (config)
   }
 
   local org_todos = require('widgets.org_todos')(config, props)
-  local wifi =  require('widgets.wifi')(config, props)
+  local wifi = require('widgets.wifi')(config, props)
 
   local padding = require('widgets.padding')
 
