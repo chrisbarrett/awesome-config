@@ -1,6 +1,6 @@
 local awful = require("awful")
-local wibox = require('wibox')
 local vicious = require('vicious')
+local wibox = require('wibox')
 
 local utils = require('utils')
 
@@ -17,6 +17,7 @@ end
 
 return function (config, props)
   local widget = wibox.widget.textbox()
+
   widget.tooltip = awful.tooltip { objects={widget} }
 
   widget:buttons(
@@ -25,7 +26,9 @@ return function (config, props)
     )
   )
 
-  vicious.register(widget, vicious.widgets.wifi, render, 3, "wlo1")
+  local success = pcall(vicious.register, widget, vicious.widgets.wifi, render, 3, "wlo1")
 
-  return widget
+  if success then
+    return widget
+  end
 end

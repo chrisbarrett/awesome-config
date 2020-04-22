@@ -19,6 +19,10 @@ awful.layout.layouts = {
   awful.layout.suit.max,
 }
 
+local function orgfile(name)
+  return os.getenv("HOME") .. "/Dropbox/org/" .. name .. ".org"
+end
+
 -- Prevent clients from being unreachable after screen count changes.
 client.connect_signal(
   "manage",
@@ -31,6 +35,11 @@ client.connect_signal(
 
 
 return function (config)
+  config.org_files = {
+    orgfile("personal"),
+    orgfile("personal_recurring"),
+  }
+
   local theme = make_theme(config)
   beautiful.init(theme)
 
@@ -125,7 +134,7 @@ return function (config)
     callback = function(self, setting)
       self.widget.text = "vol " .. utils.pips_of_pct(setting.volume, setting.state == "off");
     end
-                                             }
+  }
 
   local brightness = require("widgets.brightness")(config, props)
 
@@ -208,7 +217,7 @@ return function (config)
     gears.wallpaper.maximized(config.desktop_picture, s, true)
   end
 
-  -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
+  -- Reapply wallpaper when a screen's geometry changes (e.g. different resolution)
   screen.connect_signal("property::geometry", set_wallpaper)
 
 
@@ -234,53 +243,10 @@ return function (config)
       { 35, "orange" },
       { 999, "white" },
     },
-                                                             }
+  }
 
-  local org = wibox.widget.textbox()
-  org.tooltip = awful.tooltip { objects={org} }
-
-  local function format_org(widget, args)
-    local overdue = args[1]
-    local today = args[2]
-    local total = overdue + today
-    local tooltip_text = ""
-
-    if today > 0 then
-      tooltip_text = tooltip_text ..  "Today:   " .. today .. "\n"
-    end
-
-    if overdue > 0 then
-      tooltip_text = tooltip_text ..  "Overdue: " .. overdue .. "\n"
-    end
-
-    widget.tooltip.text = tooltip_text:match("(.-)%s*$")
-
-    if overdue > 0 then
-      return "<span foreground=\"orange\"> " .. total .. "</span>  "
-    elseif total > 0 then
-      return " " .. total .. "  "
-    else
-      return ""
-    end
-  end
-
-  local function configure_org_widget()
-    local function orgfile(name)
-      return os.getenv("HOME") .. "/Dropbox/org/" .. name .. ".org"
-    end
-
-    local agenda_files = {orgfile("personal"), orgfile("personal_recurring")}
-
-    vicious.register(org, vicious.widgets.org, format_org, 5, agenda_files)
-    return agenda_files
-  end
-
-  local has_org_files = pcall(configure_org_widget)
-
-  local has_wifi = os.execute("cat /proc/net/wireless")
-  local wifi = has_wifi and require('widgets.wifi')(config, props)
-
-  local mail = require('widgets.mail')(config, props)
+  local org_todos = require('widgets.org_todos')(config, props)
+  local wifi =  require('widgets.wifi')(config, props)
 
   local padding = require('widgets.padding')
 
@@ -310,7 +276,7 @@ return function (config)
           padding,
           padding,
           mail,
-          has_org_files and org,
+          org_todos,
           padding,
           volume.widget,
           padding,
