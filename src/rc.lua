@@ -1,4 +1,4 @@
-return function(config)
+return function (config)
 
 require("./error_handlers")
 

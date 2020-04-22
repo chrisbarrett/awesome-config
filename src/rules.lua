@@ -103,8 +103,7 @@ function ensure_tag(name, props)
   return tag
 end
 
--- Rules to apply to new clients (through the "manage" signal).
-function init_rules(config, keybindings)
+return function (config, keybindings)
   return {
     {
       rule = { },
@@ -145,5 +144,3 @@ function init_rules(config, keybindings)
     },
   }
 end
-
-return init_rules
