@@ -229,27 +229,6 @@ local battery = require("widgets.battery") {
   },
 }
 
-local mail = wibox.widget.textbox()
-
-local function format_mail(widget, args)
-  local new = args[1]
-  local unread = args[2]
-  local total = new + unread
-
-  if total > 0 then
-    return " " .. total .. "  "
-  else
-    return ""
-  end
-end
-
-local function set_up_mail(args)
-  local maildir = os.getenv("HOME") .. "/Maildir/walrus/Inbox"
-  vicious.register(mail, vicious.widgets.mdir, format_mail, 7, { maildir })
-end
-
-pcall(set_up_mail)
-
 local org = wibox.widget.textbox()
 org.tooltip = awful.tooltip { objects={org} }
 
@@ -297,6 +276,7 @@ local has_wifi = os.execute("cat /proc/net/wireless")
 local has_battery = os.execute("upower -e | grep -i battery")
 
 local wifi = require('widgets.wifi')(config, props)
+local mail = require('widgets.mail')(config, props)
 
 local function padding(factor)
   return wibox.widget {
