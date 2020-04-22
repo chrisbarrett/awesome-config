@@ -10,7 +10,7 @@ local function render(widget, args)
   return "bl " .. utils.pips_of_pct(value)
 end
 
-function init_widget(config)
+return function (config)
   local widget = wibox.widget.textbox()
 
   local vwidget = helpers.setasyncall {
@@ -28,5 +28,3 @@ function init_widget(config)
 
   return widget
 end
-
-return init_widget

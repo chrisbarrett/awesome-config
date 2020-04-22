@@ -21,7 +21,7 @@ local function format_keyboard(widget, args)
   end
 end
 
-function init_widget(config, props)
+return function (config, props)
   local widget = wibox.widget.textbox()
 
   widget.notify = function()
@@ -66,5 +66,3 @@ function init_widget(config, props)
 
   return widget
 end
-
-return init_widget
