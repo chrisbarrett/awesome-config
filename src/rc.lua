@@ -284,12 +284,7 @@ return function (config)
 
   local mail = require('widgets.mail')(config, props)
 
-  local function padding(factor)
-    return wibox.widget {
-      orientation = "vertical",
-      forced_width = (factor or 1) * 10,
-    }
-  end
+  local padding = require('widgets.padding')
 
   awful.screen.connect_for_each_screen(function(s)
       set_wallpaper(s)
@@ -305,7 +300,7 @@ return function (config)
             filter = awful.widget.taglist.filter.all,
             buttons = taglist_buttons,
           },
-          padding(3),
+          padding.times(3),
         },
         awful.widget.tasklist {
           screen = s,
@@ -314,20 +309,20 @@ return function (config)
         },
         {
           layout = wibox.layout.fixed.horizontal,
-          padding(),
-          padding(),
+          padding,
+          padding,
           mail,
           has_org_files and org,
-          padding(),
+          padding,
           volume.widget,
-          padding(),
+          padding,
           brightness,
-          wifi and padding(),
+          wifi and padding,
           wifi,
           keyboard_layout,
-          battery and padding(2),
+          battery and padding.times(2),
           battery,
-          battery and padding(),
+          battery and padding,
           clock,
         },
       }
