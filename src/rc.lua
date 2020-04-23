@@ -9,7 +9,7 @@ local wibox = require("wibox")
 require("awful.autofocus")
 require("awful.hotkeys_popup.keys")
 
-local utils = require('./utils')
+local utils = require('utils')
 
 awful.layout.layouts = {
   awful.layout.suit.tile,
@@ -84,9 +84,9 @@ return function (config)
     end
   )
 
-  local keybindings = require('./keybindings')(config, props)
+  local keybindings = require('keybindings')(config, props)
   root.keys(keybindings.global)
-  awful.rules.rules = require('./rules')(config, keybindings)
+  awful.rules.rules = require('rules')(config, keybindings)
 
 
   -- Menu

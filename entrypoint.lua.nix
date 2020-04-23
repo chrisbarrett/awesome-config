@@ -1,5 +1,5 @@
 { pkgs, scripts, rofi }: ''
-require("./error_handlers")
+require("error_handlers")
 
 -- Prevent clients from being unreachable after screen count changes.
 client.connect_signal(
