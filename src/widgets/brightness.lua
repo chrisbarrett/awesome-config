@@ -6,8 +6,7 @@ local wibox = require('wibox')
 local utils = require('utils')
 
 local function render(widget, args)
-  local value = args["{value}"]
-  return "bl " .. utils.pips_of_pct(value)
+  return "bl " .. utils.pips_of_pct(args.value)
 end
 
 return function (config)
@@ -20,7 +19,7 @@ return function (config)
         function(stdout)
           local trimmed = stdout.gsub(stdout, '[ \t\n\r]', '')
           local value = math.floor(0.5 + tonumber(trimmed))
-          callback({ ["{value}"] = value })
+          callback({ value = value })
       end)
   end }
 
