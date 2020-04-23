@@ -6,28 +6,28 @@ local wibox = require('wibox')
 local utils = require('utils')
 
 local function render(widget, args)
-  return "bl " .. utils.pips_of_pct(args.value)
+  widget.text = "bl " .. utils.pips_of_pct(args.value)
 end
 
-return function (config)
+return function (config, props)
   local widget = wibox.widget.textbox()
 
   function widget:update()
-    vicious.force({ brightness })
+    props.currentBrightness(function (value)
+        vicious.force({ brightness })
+        render(self, { value = value })
+    end)
   end
 
   local vwidget = helpers.setasyncall {
     async = function (format, warg, callback)
-      awful.spawn.easy_async_with_shell(
-        config.xbacklight_path .. " -get",
-        function(stdout)
-          local trimmed = stdout.gsub(stdout, '[ \t\n\r]', '')
-          local value = math.floor(0.5 + tonumber(trimmed))
-          callback({ value = value })
+      props.currentBrightness(function (value)
+          callback { value = value }
       end)
-  end }
+    end
+  }
 
-  vicious.register(widget, vwidget, render)
+  vicious.register(widget, vwidget, render, 13)
 
   return widget
 end

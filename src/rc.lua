@@ -2,8 +2,6 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 local gears = require("gears")
 local menubar = require("menubar")
-local naughty = require("naughty")
-local vicious = require('vicious')
 local wibox = require("wibox")
 
 require("awful.autofocus")
@@ -64,8 +62,7 @@ return function (config)
   table.insert(
     hooks.keyboard_changed,
     function (value)
-      vicious.force({ keyboard })
-      keyboard.notify(value)
+      keyboard:update(value)
     end
   )
 

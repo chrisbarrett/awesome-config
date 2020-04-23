@@ -38,7 +38,8 @@ end
 return function (config, props)
   local widget = wibox.widget.textbox()
 
-  function widget.notify(value)
+  function widget:update(value)
+    vicious.force({ self })
     if value then
       show_notification(layout)
     else
@@ -70,7 +71,7 @@ return function (config, props)
     end
   }
 
-  vicious.register(widget, vwidget, render)
+  vicious.register(widget, vwidget, render, 13)
 
   return widget
 end

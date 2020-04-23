@@ -33,6 +33,17 @@ return function(config, hooks)
     end)
   end
 
+  function props.currentBrightness(callback)
+    awful.spawn.easy_async_with_shell(
+      config.xbacklight_path .. " -get",
+      function(stdout)
+        local trimmed = stdout.gsub(stdout, '[ \t\n\r]', '')
+        local value = math.floor(0.5 + tonumber(trimmed))
+        callback(value)
+    end)
+  end
+
+
   function props.brightnessUp()
     awful.spawn.easy_async_with_shell(
       config.xbacklight_path .. " -inc 10%",
