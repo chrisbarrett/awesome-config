@@ -1,24 +1,36 @@
 local awful = require('awful')
 
 return function(config, hooks)
+  local volume = require('services.volume')(config)
+
   local props = {}
 
+  function props.currentVolume(callback)
+    volume:state(callback)
+  end
+
   function props.volumeUp()
-    for _, f in pairs(hooks.volume_changed) do
-      f(1)
-    end
+    volume:up(function ()
+      for _, f in pairs(hooks.volume_changed) do
+        f(1)
+      end
+    end)
   end
 
   function props.volumeDown()
-    for _, f in pairs(hooks.volume_changed) do
-      f(-1)
-    end
+    volume:down(function ()
+      for _, f in pairs(hooks.volume_changed) do
+        f(-1)
+      end
+    end)
   end
 
   function props.toggleMute()
-    for _, f in pairs(hooks.volume_changed) do
-      f(0)
-    end
+    volume:toggle(function ()
+      for _, f in pairs(hooks.volume_changed) do
+        f(0)
+      end
+    end)
   end
 
   function props.brightnessUp()
@@ -41,6 +53,10 @@ return function(config, hooks)
         end
       end
     )
+  end
+
+  function props.openAudioManager()
+    awful.spawn(config.audio_manager_program)
   end
 
   function props.openEditor()

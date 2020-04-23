@@ -28,6 +28,7 @@ return function (config)
   }
 
   local props = require('props')(config, hooks)
+  props.volume_service = require('services.volume')(config)
 
   config.org_files = {
     orgfile("personal"),
@@ -40,28 +41,12 @@ return function (config)
   client.connect_signal("focus", function(c) c.border_color = theme.border_focus end)
   client.connect_signal("unfocus", function(c) c.border_color = theme.border_normal end)
 
-  local volume = require("widgets.volume-control") {
-    device = "pulse",
-    step = '10%',
-    lclick = config.audio_manager_program,
-    rclick = "toggle",
-    callback = function(self, setting)
-      self.widget.text = "vol " .. utils.pips_of_pct(setting.volume, setting.state == "off");
-    end
-  }
+  local volume = require('widgets.volume')(config, props)
 
   table.insert(
     hooks.volume_changed,
-    function(value)
-      if value == 1 then
-        volume:unmute()
-        volume:up()
-      elseif value == -1 then
-        volume:unmute()
-        volume:down()
-      else
-        volume:toggle()
-      end
+    function()
+      volume:update()
     end
   )
 
@@ -70,7 +55,7 @@ return function (config)
   table.insert(
     hooks.brightness_changed,
     function()
-      vicious.force({ brightness })
+      brightness:update()
     end
   )
 
@@ -213,7 +198,7 @@ return function (config)
           mail,
           org_todos,
           padding,
-          volume.widget,
+          volume,
           padding,
           brightness,
           wifi and padding,

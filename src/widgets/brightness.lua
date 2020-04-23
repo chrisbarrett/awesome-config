@@ -12,6 +12,10 @@ end
 return function (config)
   local widget = wibox.widget.textbox()
 
+  function widget:update()
+    vicious.force({ brightness })
+  end
+
   local vwidget = helpers.setasyncall {
     async = function (format, warg, callback)
       awful.spawn.easy_async_with_shell(
