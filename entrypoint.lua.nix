@@ -1,5 +1,6 @@
 { pkgs, scripts, rofi }: ''
 require("error_handlers")
+local awful = require('awful')
 
 -- Prevent clients from being unreachable after screen count changes.
 client.connect_signal(
