@@ -22,39 +22,6 @@ return function(config, hooks)
     awful.spawn(config.wifi_manager_command)
   end
 
-  function props.setKeyboardLayoutDvorak()
-    awful.spawn.easy_async_with_shell(
-      config.set_keyboard_dvorak,
-      function()
-        for _, f in pairs(hooks.keyboard_changed) do
-          f('us(dvp)')
-        end
-      end
-    )
-  end
-
-  function props.setKeyboardLayoutQwerty()
-    awful.spawn.easy_async_with_shell(
-      config.set_keyboard_qwerty,
-      function()
-        for _, f in pairs(hooks.keyboard_changed) do
-          f('us')
-        end
-      end
-    )
-  end
-
-  function props.toggleKeyboardLayout()
-    awful.spawn.easy_async_with_shell(
-      config.toggle_keyboard_command,
-      function()
-        for _, f in pairs(hooks.keyboard_changed) do
-          f()
-        end
-      end
-    )
-  end
-
   function props.prevSong ()
     awful.spawn("sp prev")
   end

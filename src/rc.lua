@@ -21,11 +21,8 @@ end
 return function (config)
   local services = {
     brightness = require('services.brightness')(config),
+    keyboard = require('services.keyboard')(config),
     volume = require('services.volume')(config),
-  }
-
-  local hooks = {
-    keyboard_changed = {},
   }
 
   local props = require('props')(config, hooks)
@@ -43,15 +40,7 @@ return function (config)
 
   local volume = require('widgets.volume')(services.volume)
   local brightness = require("widgets.brightness")(services.brightness)
-
-  local keyboard = require("widgets.keyboard")(config, props)
-
-  table.insert(
-    hooks.keyboard_changed,
-    function (value)
-      keyboard:update(value)
-    end
-  )
+  local keyboard = require("widgets.keyboard")(services.keyboard)
 
   local keybindings = require('keybindings')(config, props, services)
   root.keys(keybindings.global)

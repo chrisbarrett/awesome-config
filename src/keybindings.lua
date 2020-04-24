@@ -217,7 +217,7 @@ return function (config, props, services)
 
     -- Function keys
 
-    awful.key({}, "XF86TouchpadToggle", props.toggleKeyboardLayout),
+    awful.key({}, "XF86TouchpadToggle", services.keyboard.toggle_layout),
     awful.key({}, "XF86AudioRaiseVolume", services.volume.up),
     awful.key({}, "XF86AudioLowerVolume", services.volume.down),
     awful.key({}, "XF86AudioMute", services.volume.toggle),
