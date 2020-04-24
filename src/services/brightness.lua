@@ -1,7 +1,7 @@
 local awful = require('awful')
 
 local function parse(stdout)
-  local trimmed = stdout.gsub(stdout, '[ \t\n\r]', '')
+  local trimmed = stdout:gsub('[ \t\n\r]', '')
   local brightness = math.floor(0.5 + tonumber(trimmed))
   return { brightness = brightness }
 end

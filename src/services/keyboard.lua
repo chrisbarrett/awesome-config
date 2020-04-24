@@ -7,7 +7,7 @@ local layouts = {
 }
 
 local function parse(stdout)
-  local trimmed = stdout.gsub(stdout, '[ \t\n\r]', '')
+  local trimmed = stdout:gsub('[ \t\n\r]', '')
   local layout = layouts[trimmed] or trimmed
   return { layout = layout }
 end
