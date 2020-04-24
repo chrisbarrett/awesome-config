@@ -20,11 +20,11 @@ end
 
 return function (config)
   local services = {
-    volume = require('services.volume')(config)
+    brightness = require('services.brightness')(config),
+    volume = require('services.volume')(config),
   }
 
   local hooks = {
-    brightness_changed = {},
     keyboard_changed = {},
   }
 
@@ -42,15 +42,7 @@ return function (config)
   client.connect_signal("unfocus", function(c) c.border_color = theme.border_normal end)
 
   local volume = require('widgets.volume')(services.volume)
-
-  local brightness = require("widgets.brightness")(config, props)
-
-  table.insert(
-    hooks.brightness_changed,
-    function()
-      brightness:update()
-    end
-  )
+  local brightness = require("widgets.brightness")(services.brightness)
 
   local keyboard = require("widgets.keyboard")(config, props)
 

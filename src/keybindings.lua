@@ -222,8 +222,8 @@ return function (config, props, services)
     awful.key({}, "XF86AudioLowerVolume", services.volume.down),
     awful.key({}, "XF86AudioMute", services.volume.toggle),
 
-    awful.key({}, "XF86MonBrightnessUp", props.brightnessUp),
-    awful.key({}, "XF86MonBrightnessDown", props.brightnessDown),
+    awful.key({}, "XF86MonBrightnessUp", services.brightness.up),
+    awful.key({}, "XF86MonBrightnessDown", services.brightness.down),
 
     awful.key({mod}, "F1", props.prevSong),
     awful.key({mod}, "F2", props.playPauseSong),

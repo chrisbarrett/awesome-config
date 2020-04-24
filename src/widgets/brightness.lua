@@ -1,29 +1,26 @@
-local awful = require("awful")
 local helpers = require("vicious.helpers")
 local vicious = require('vicious')
 local wibox = require('wibox')
 
 local utils = require('utils')
 
-local function render(widget, args)
-  widget.text = "bl " .. utils.pips_of_pct(args.value)
+local function render(widget, state)
+  local pips = utils.pips_of_pct(state.brightness)
+  local text = "bl " .. pips
+  widget.text = text
 end
 
-return function (config, props)
+return function (service)
   local widget = wibox.widget.textbox()
 
-  function widget:update()
-    props.currentBrightness(function (value)
-        vicious.force({ brightness })
-        render(self, { value = value })
-    end)
-  end
+  service:add_change_hook(function (state)
+    vicious.force({ widget })
+    render(widget, state)
+  end)
 
   local vwidget = helpers.setasyncall {
     async = function (format, warg, callback)
-      props.currentBrightness(function (value)
-          callback { value = value }
-      end)
+      service.state(callback)
     end
   }
 
