@@ -2,7 +2,6 @@ local awful = require('awful')
 local helpers = require("vicious.helpers")
 local vicious = require('vicious')
 local wibox = require('wibox')
-local naughty = require('naughty')
 
 local utils = require('utils')
 
@@ -12,31 +11,27 @@ local function render(widget, args)
   widget.text = text
 end
 
-return function (config, props)
+return function (service)
   local widget = wibox.widget.textbox()
 
-  function widget:update(state)
-    props.currentVolume(function(args)
-        vicious.force({ volume })
-        render(widget, args)
-    end)
-  end
+  service:add_change_hook(function (state)
+    vicious.force({ widget })
+    render(widget, state)
+  end)
 
   widget:buttons(
     awful.util.table.join(
-      awful.button({ }, 1, props.openAudioManager)
+      awful.button({ }, 1, service.openAudioManager)
     )
   )
 
   local vwidget = helpers.setasyncall {
     async = function (format, warg, callback)
-      props.currentVolume(function(args)
-          callback(args)
-      end)
+      service.state(callback)
     end
   }
 
-  vicious.register( widget, vwidget, render, 7)
+  vicious.register(widget, vwidget, render, 7)
 
   return widget
 end

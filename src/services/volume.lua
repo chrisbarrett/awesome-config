@@ -6,44 +6,66 @@ local function parse(output)
   return { volume = volume, muted = muted }
 end
 
-return function (config)
+return function(config)
   local service = {}
-  local step = config.step_percent or 10
 
-  function service:state(callback)
+  local change_hooks = {}
+
+  function changed(state)
+    for _, f in pairs(change_hooks) do
+      f(state)
+    end
+  end
+
+  function service:add_change_hook(func)
+    table.insert(change_hooks, func)
+  end
+
+  function service.state(callback)
     awful.spawn.easy_async_with_shell(
       "amixer sget Master",
       function(stdout)
-        callback(parse(stdout))
+        local result = parse(stdout)
+        if callback then callback(result) end
       end
     )
   end
 
-  function service:toggle(callback)
+  function service.toggle(callback)
     awful.spawn.easy_async_with_shell(
       "amixer set Master toggle",
       function(stdout)
-        callback(parse(stdout))
+        local result = parse(stdout)
+        if callback then callback(result) end
+        changed(result)
       end
     )
   end
 
-  function service:up(callback)
+  function service.up(callback)
     awful.spawn.easy_async_with_shell(
-      "amixer set Master on && amixer set Master " .. step .. "%+",
+      "amixer set Master on && amixer set Master 10%+",
       function(stdout)
-        callback(parse(stdout))
+        local result = parse(stdout)
+        if callback then callback(result) end
+        changed(result)
       end
     )
   end
 
-  function service:down(callback)
+  function service.down(callback)
     awful.spawn.easy_async_with_shell(
-      "amixer set Master on && amixer set Master " .. step .. "%-",
+      "amixer set Master on && amixer set Master 10%-",
       function(stdout)
-        callback(parse(stdout))
+        local result = parse(stdout)
+        if callback then callback(result) end
+        changed(result)
       end
     )
+  end
+
+  function service.openAudioManager()
+    awful.spawn(config.audio_manager_program)
   end
 
   return service

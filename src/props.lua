@@ -1,37 +1,7 @@
 local awful = require('awful')
 
 return function(config, hooks)
-  local volume = require('services.volume')(config)
-
   local props = {}
-
-  function props.currentVolume(callback)
-    volume:state(callback)
-  end
-
-  function props.volumeUp()
-    volume:up(function ()
-      for _, f in pairs(hooks.volume_changed) do
-        f(1)
-      end
-    end)
-  end
-
-  function props.volumeDown()
-    volume:down(function ()
-      for _, f in pairs(hooks.volume_changed) do
-        f(-1)
-      end
-    end)
-  end
-
-  function props.toggleMute()
-    volume:toggle(function ()
-      for _, f in pairs(hooks.volume_changed) do
-        f(0)
-      end
-    end)
-  end
 
   function props.currentBrightness(callback)
     awful.spawn.easy_async_with_shell(
@@ -64,10 +34,6 @@ return function(config, hooks)
         end
       end
     )
-  end
-
-  function props.openAudioManager()
-    awful.spawn(config.audio_manager_program)
   end
 
   function props.openEditor()

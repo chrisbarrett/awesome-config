@@ -19,14 +19,16 @@ local function orgfile(name)
 end
 
 return function (config)
+  local services = {
+    volume = require('services.volume')(config)
+  }
+
   local hooks = {
     brightness_changed = {},
     keyboard_changed = {},
-    volume_changed = {},
   }
 
   local props = require('props')(config, hooks)
-  props.volume_service = require('services.volume')(config)
 
   config.org_files = {
     orgfile("personal"),
@@ -39,14 +41,7 @@ return function (config)
   client.connect_signal("focus", function(c) c.border_color = theme.border_focus end)
   client.connect_signal("unfocus", function(c) c.border_color = theme.border_normal end)
 
-  local volume = require('widgets.volume')(config, props)
-
-  table.insert(
-    hooks.volume_changed,
-    function()
-      volume:update()
-    end
-  )
+  local volume = require('widgets.volume')(services.volume)
 
   local brightness = require("widgets.brightness")(config, props)
 
@@ -66,7 +61,7 @@ return function (config)
     end
   )
 
-  local keybindings = require('keybindings')(config, props)
+  local keybindings = require('keybindings')(config, props, services)
   root.keys(keybindings.global)
   awful.rules.rules = require('rules')(config, keybindings)
 
