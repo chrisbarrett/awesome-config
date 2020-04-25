@@ -30,7 +30,7 @@ tyrannical.tags = {
     name = "comms",
     init = false,
     volatile = true,
-    class = {"Slack", "skype"},
+    class = {"Slack", "skype", "discord"},
   },
   {
     name = "music",
