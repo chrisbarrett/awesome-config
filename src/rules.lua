@@ -44,7 +44,7 @@ tyrannical.tags = {
     exclusive = true,
     volatile = true,
     init = false,
-    class = {"mpv"},
+    class = {"mpv", "vlc"},
   },
   {
     name = "gaming",
