@@ -1,24 +1,20 @@
-{ pkgs ? import <nixpkgs> {} }: with pkgs;
+{ pkgs ? import <nixpkgs> {
+  overlays = [(import ./overlays)];
+}
+}: with pkgs;
 
 let
+  rofiCustom = rofiWithTheme (callPackage ./rofi-theme.nix {});
+
   # Materialise a bridging config file so pkgs required by the config are installed and available.
 
   entrypoint = writeText "awesome-entrypoint-lua" (
     callPackage ./entrypoint.lua.nix {
       inherit pkgs;
+      rofi = rofiCustom;
       scripts = callPackage ./scripts.nix {};
-      rofi = withCLocale rofi "rofi";
     }
   );
-
-  withCLocale = pkg: name: pkgs.symlinkJoin {
-    inherit name;
-    paths = [pkg];
-    buildInputs = [makeWrapper];
-    postBuild = ''
-      wrapProgram "$out/bin/$name" --set LC_ALL C
-    '';
-  };
 
   # Expose lua config files at $out/etc/awesome.
 
@@ -60,7 +56,7 @@ in
 symlinkJoin {
   name = "awesomewm-with-config";
   buildInputs = [makeWrapper];
-  paths = [awesome];
+  paths = [awesome rofiCustom];
 
   # Wrap configuration so that we attempt to resolve modules from
   # ~/.config/awesome/src, falling back to the config packed into the store.
