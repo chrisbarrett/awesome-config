@@ -266,5 +266,11 @@ return function (config, props)
     })
   )
 
-  return { global = global, client = client }
+  local keybindings = { global = global, client = client }
+
+  function keybindings.install()
+    root.keys(keybindings.global)
+  end
+
+  return keybindings
 end

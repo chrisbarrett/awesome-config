@@ -4,7 +4,14 @@ local wibox = require("wibox")
 
 local padding = require('widgets.padding')
 
-return function(config, props, widgets)
+return function(config, props)
+  local battery = require("widgets.battery")(config, props)
+  local brightness = require("widgets.brightness")(props.services.brightness)
+  local keyboard = require("widgets.keyboard")(props.services.keyboard)
+  local org_todos = require('widgets.org_todos')(config, props)
+  local volume = require('widgets.volume')(props.services.volume)
+  local wifi = require('widgets.wifi')(config, props)
+
   local taglist_buttons = gears.table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
     awful.button({ config.modkey }, 1, function(t)
@@ -83,18 +90,18 @@ return function(config, props, widgets)
         layout = wibox.layout.fixed.horizontal,
         padding,
         padding,
-        widgets.mail,
-        widgets.org_todos,
+        mail,
+        org_todos,
         padding,
-        widgets.volume,
+        volume,
         padding,
-        widgets.brightness,
-        widgets.wifi and padding,
-        widgets.wifi,
-        widgets.keyboard,
-        widgets.battery and padding.times(2),
-        widgets.battery,
-        widgets.battery and padding,
+        brightness,
+        wifi and padding,
+        wifi,
+        keyboard,
+        battery and padding.times(2),
+        battery,
+        battery and padding,
         wibox.widget.textclock(),
       },
     }

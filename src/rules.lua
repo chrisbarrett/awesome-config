@@ -1,5 +1,3 @@
--- Rules
-
 local awful = require("awful")
 local beautiful = require("beautiful")
 local gears = require("gears")
@@ -104,7 +102,7 @@ function ensure_tag(name, props)
 end
 
 return function (config, keybindings)
-  return {
+  local rules = {
     {
       rule = { },
       properties = {
@@ -143,4 +141,15 @@ return function (config, keybindings)
       end
     },
   }
+
+  function rules.install()
+    awful.layout.layouts = {
+      awful.layout.suit.tile,
+      awful.layout.suit.max,
+    }
+
+    awful.rules.rules = rules
+  end
+
+  return rules
 end

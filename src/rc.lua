@@ -15,34 +15,21 @@ return function (config)
     orgfile("personal_recurring"),
   }
 
-  local props = require('props')(config, hooks)
-  props.services = {
+  local props = require('props')(config, {
     brightness = require('services.brightness')(config),
     keyboard = require('services.keyboard')(config),
     volume = require('services.volume')(config),
-  }
+  })
 
   local theme = require('theme')(config)
   theme.install()
 
   local keybindings = require('keybindings')(config, props)
-  root.keys(keybindings.global)
+  keybindings.install()
 
-  awful.layout.layouts = {
-    awful.layout.suit.tile,
-    awful.layout.suit.max,
-  }
+  local rules = require('rules')(config, keybindings)
+  rules.install()
 
-  awful.rules.rules = require('rules')(config, keybindings)
-
-  local menubar = require("widgets.menubar")(config, props, {
-    battery = require("widgets.battery")(config, props),
-    brightness = require("widgets.brightness")(props.services.brightness),
-    keyboard = require("widgets.keyboard")(props.services.keyboard),
-    org_todos = require('widgets.org_todos')(config, props),
-    volume = require('widgets.volume')(props.services.volume),
-    wifi = require('widgets.wifi')(config, props),
-  })
-
+  local menubar = require("widgets.menubar")(config, props)
   menubar.install()
 end
