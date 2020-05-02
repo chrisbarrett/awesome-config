@@ -9,7 +9,7 @@ return function(config, props)
   local keyboard = require("widgets.keyboard")(props.services.keyboard)
   local brightness = require("widgets.brightness")(config, props)
   local org_todos = require('widgets.org_todos')(config, props)
-  local volume = require('widgets.volume')(props.services.volume)
+  local volume = require('widgets.volume')(config, props)
   local wifi = require('widgets.wifi')(config, props)
 
   local taglist_buttons = gears.table.join(

@@ -17,7 +17,6 @@ local function nix_bin(cmd, args)
 end
 
 local config = {
-  audio_manager_program = '${pkgs.pavucontrol}/bin/pavucontrol',
   desktop_picture = '${./assets/desktop.png}',
   editor_command = nix_bin('emacsclient', '--create-frame --alternate-editor=emacs'),
   fs_browser = 'nautilus',

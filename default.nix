@@ -63,6 +63,7 @@ symlinkJoin {
   postBuild = ''
     wrapProgram "$out/bin/awesome" \
       --prefix PATH : '${xorg.xbacklight}/bin' \
+      --set AWESOME_AUDIO_MANAGER_COMMAND '${pavucontrol}/bin/pavucontrol' \
       --set AWESOME_BROWSER_COMMAND '${chromium}/bin/chromium' \
       --add-flags "--config ${awesome-config}/etc/awesome/entrypoint.lua" \
       --add-flags "--search ~/.config/awesome/src" \

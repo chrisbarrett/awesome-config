@@ -64,9 +64,5 @@ return function(config)
     )
   end
 
-  function service.openAudioManager()
-    awful.spawn(config.audio_manager_program)
-  end
-
   return service
 end

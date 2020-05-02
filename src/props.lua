@@ -4,6 +4,10 @@ local naughty = require('naughty')
 return function(config, services)
   local props = { services = services }
 
+  function props.openAudioManager()
+    awful.spawn(os.getenv("AWESOME_AUDIO_MANAGER_COMMAND"))
+  end
+
   function props.toggle_theme()
     awful.spawn(os.getenv("HOME") .. "/.local/bin/theme-toggle")
   end

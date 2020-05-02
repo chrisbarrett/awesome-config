@@ -11,8 +11,9 @@ local function render(widget, args)
   widget.text = text
 end
 
-return function (service)
+return function (config, props)
   local widget = wibox.widget.textbox()
+  local service = props.services.volume
 
   service:add_change_hook(function (state)
     vicious.force({ widget })
@@ -21,7 +22,7 @@ return function (service)
 
   widget:buttons(
     awful.util.table.join(
-      awful.button({ }, 1, service.openAudioManager)
+      awful.button({ }, 1, props.openAudioManager)
     )
   )
 
