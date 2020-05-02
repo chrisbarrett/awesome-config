@@ -10,8 +10,9 @@ local function render(widget, state)
   widget.text = text
 end
 
-return function (service)
+return function (config, props)
   local widget = wibox.widget.textbox()
+  local service = props.services.brightness
 
   service:add_change_hook(function (state)
     vicious.force({ widget })

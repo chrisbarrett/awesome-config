@@ -22,7 +22,7 @@ return function (config)
 
   function service.state(callback)
     awful.spawn.easy_async_with_shell(
-      config.xbacklight_path .. ' -get',
+      'xbacklight -get',
       function(stdout)
         local result = parse(stdout)
         if callback then callback(result) end
@@ -31,7 +31,7 @@ return function (config)
 
   function service.up(callback)
     awful.spawn.easy_async_with_shell(
-      config.xbacklight_path .. ' -inc 10%',
+      'xbacklight -inc 10%',
       function()
         service.state(function(result)
             if callback then callback(result) end
@@ -43,7 +43,7 @@ return function (config)
 
   function service.down(callback)
     awful.spawn.easy_async_with_shell(
-      config.xbacklight_path .. ' -dec 10%',
+      'xbacklight -dec 10%',
       function()
         service.state(function(result)
             if callback then callback(result) end

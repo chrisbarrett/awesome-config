@@ -62,6 +62,7 @@ symlinkJoin {
   # ~/.config/awesome/src, falling back to the config packed into the store.
   postBuild = ''
     wrapProgram "$out/bin/awesome" \
+      --prefix PATH : '${xorg.xbacklight}/bin' \
       --set AWESOME_BROWSER_COMMAND '${chromium}/bin/chromium' \
       --add-flags "--config ${awesome-config}/etc/awesome/entrypoint.lua" \
       --add-flags "--search ~/.config/awesome/src" \
