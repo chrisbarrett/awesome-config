@@ -11,8 +11,9 @@ function render(widget, state)
   end
 end
 
-return function (service)
+return function (config, props)
   local widget = wibox.widget.textbox()
+  local service = props.services.keyboard
 
   widget:buttons(
     awful.util.table.join(
