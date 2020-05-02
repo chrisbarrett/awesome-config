@@ -110,7 +110,7 @@ function fewer_columns()
   awful.tag.incncol(-1, nil, true)
 end
 
-return function (config, props, services)
+return function (config, props)
   local mod = config.modkey
 
   local global = gears.table.join(
@@ -221,13 +221,13 @@ return function (config, props, services)
 
     -- Function keys
 
-    awful.key({}, "XF86TouchpadToggle", services.keyboard.toggle_layout),
-    awful.key({}, "XF86AudioRaiseVolume", services.volume.up),
-    awful.key({}, "XF86AudioLowerVolume", services.volume.down),
-    awful.key({}, "XF86AudioMute", services.volume.toggle),
+    awful.key({}, "XF86TouchpadToggle", props.services.keyboard.toggle_layout),
+    awful.key({}, "XF86AudioRaiseVolume", props.services.volume.up),
+    awful.key({}, "XF86AudioLowerVolume", props.services.volume.down),
+    awful.key({}, "XF86AudioMute", props.services.volume.toggle),
 
-    awful.key({}, "XF86MonBrightnessUp", services.brightness.up),
-    awful.key({}, "XF86MonBrightnessDown", services.brightness.down),
+    awful.key({}, "XF86MonBrightnessUp", props.services.brightness.up),
+    awful.key({}, "XF86MonBrightnessDown", props.services.brightness.down),
 
     awful.key({mod}, "F1", props.prevSong),
     awful.key({mod}, "F2", props.playPauseSong),

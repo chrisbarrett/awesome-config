@@ -1,8 +1,15 @@
+local awful = require("awful")
+local beautiful = require("beautiful")
+local gears = require("gears")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 
 return function(config)
-  return {
+  local function set_wallpaper(s)
+    gears.wallpaper.maximized(config.desktop_picture, s, true)
+  end
+
+  local theme = {
     font          = "Ubuntu Mono",
     wallpaper     = config.desktop_picture,
 
@@ -40,4 +47,15 @@ return function(config)
     hotkeys_group_margin = 20,
     tasklist_plain_task_name = true,
   }
+
+  function theme.install()
+    beautiful.init(theme)
+    client.connect_signal("focus", function(c) c.border_color = theme.border_focus end)
+    client.connect_signal("unfocus", function(c) c.border_color = theme.border_normal end)
+
+    screen.connect_signal("property::geometry", set_wallpaper)
+    awful.screen.connect_for_each_screen(set_wallpaper)
+  end
+
+  return theme
 end
