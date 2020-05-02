@@ -9,7 +9,7 @@ return function(config, services)
   end
 
   function props.toggle_theme()
-    awful.spawn(os.getenv("HOME") .. "/.local/bin/theme-toggle")
+    awful.spawn(os.getenv("AWESOME_TOGGLE_THEME_COMMAND"))
   end
 
   function props.openEditor()
