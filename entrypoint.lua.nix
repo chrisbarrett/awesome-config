@@ -23,7 +23,6 @@ local config = {
   editor_command = nix_bin('emacsclient', '--create-frame --alternate-editor=emacs'),
   fs_browser = 'nautilus',
   launcher_command = '${rofi}/bin/rofi -show run',
-  modkey = 'Mod4',
   terminal_command = 'gnome-terminal',
   wifi_manager_command = 'nm-connection-editor',
   toggle_keyboard_command = '${scripts.keyboardToggle}',

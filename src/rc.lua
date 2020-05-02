@@ -10,6 +10,8 @@ local function orgfile(name)
 end
 
 return function (config)
+  config.modkey = 'Mod4'
+
   config.org_files = {
     orgfile("personal"),
     orgfile("personal_recurring"),
