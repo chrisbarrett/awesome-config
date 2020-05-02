@@ -33,7 +33,7 @@ return function(config, services)
   end
 
   function props.openLauncher ()
-    awful.spawn(config.launcher_command)
+    awful.spawn(os.getenv("AWESOME_LAUNCHER_COMMAND"))
   end
 
   function props.openWifiManager()
