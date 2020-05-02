@@ -17,7 +17,7 @@ return function(config, services)
   end
 
   function props.hasBattery()
-    return os.execute("upower -e | grep -i battery")
+    return awful.spawn(os.execute("AWESOME_TEST_BATTERY_COMMAND"))
   end
 
   function props.openBrowser()
