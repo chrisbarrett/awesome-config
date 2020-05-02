@@ -211,16 +211,16 @@ return function (config, props)
         description = "open a web browser", group = "launcher"
     }),
 
+    awful.key({ mod }, "d", props.openTerminal, {
+        description = "open a terminal", group = "launcher"
+    }),
+
     awful.key({ mod }, "e", props.openEditor, {
         description = "open an editor", group = "launcher"
     }),
 
     awful.key({ mod }, "f", props.openFSBrowser, {
         description = "open a filesystem window", group = "launcher"
-    }),
-
-    awful.key({ mod }, "d", props.openTerminal, {
-        description = "open a terminal", group = "launcher"
     }),
 
 
