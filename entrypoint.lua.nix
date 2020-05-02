@@ -20,7 +20,6 @@ local config = {
   desktop_picture = '${./assets/desktop.png}',
   editor_command = nix_bin('emacsclient', '--create-frame --alternate-editor=emacs'),
   launcher_command = '${rofi}/bin/rofi -show run',
-  terminal_command = 'gnome-terminal',
   wifi_manager_command = 'nm-connection-editor',
   toggle_keyboard_command = '${scripts.keyboardToggle}',
   set_keyboard_qwerty = '${scripts.keyboardDvorak}',

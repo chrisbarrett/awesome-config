@@ -29,7 +29,7 @@ return function(config, services)
   end
 
   function props.openTerminal()
-    awful.spawn(config.terminal_command)
+    awful.spawn(os.getenv("AWESOME_TERMINAL_COMMAND"))
   end
 
   function props.openLauncher ()

@@ -66,6 +66,7 @@ symlinkJoin {
       --set AWESOME_AUDIO_MANAGER_COMMAND '${pavucontrol}/bin/pavucontrol' \
       --set AWESOME_BROWSER_COMMAND '${chromium}/bin/chromium' \
       --set AWESOME_FILE_MANAGER_COMMAND '${gnome3.nautilus}/bin/nautilus' \
+      --set AWESOME_TERMINAL_COMMAND '${gnome3.gnome-terminal}/bin/gnome-terminal' \
       --add-flags "--config ${awesome-config}/etc/awesome/entrypoint.lua" \
       --add-flags "--search ~/.config/awesome/src" \
       --add-flags "--search ${awesome-config}/etc/awesome" \
