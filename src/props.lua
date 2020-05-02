@@ -12,8 +12,12 @@ return function(config, services)
     awful.spawn(os.getenv("AWESOME_TOGGLE_THEME_COMMAND"))
   end
 
-  function props.openEditor()
-    awful.spawn(os.getenv("EDITOR"))
+  function props.openEditor(file)
+    if file then
+      awful.spawn(os.getenv("AWESOME_EDITOR_COMMAND" .. " " .. file))
+    else
+      awful.spawn(os.getenv("AWESOME_EDITOR_COMMAND"))
+    end
   end
 
   function props.hasBattery()
