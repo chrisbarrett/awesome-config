@@ -1,7 +1,12 @@
 local awful = require('awful')
+local naughty = require('naughty')
 
 return function(config, hooks)
   local props = {}
+  function props.toggle_theme()
+    awful.spawn(os.getenv("HOME") .. "/.local/bin/theme-toggle")
+  end
+
   function props.openEditor()
     awful.spawn(config.editor_command)
   end

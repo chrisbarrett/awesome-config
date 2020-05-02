@@ -122,6 +122,10 @@ return function (config, props, services)
         description="show help", group="awesome"
     }),
 
+    awful.key({ mod }, "&", props.toggle_theme, {
+        description = "toggle theme", group = "awesome"
+    }),
+
     awful.key({ mod }, ",", prev_tag, {
         description = "view previous", group = "tag"
     }),
