@@ -204,7 +204,12 @@ return function (config, props)
         description = "decrease the number of columns", group = "layout"
     }),
 
+
     -- Standard programs
+
+    awful.key({ mod }, "b", props.openBrowser, {
+        description = "open a web browser", group = "launcher"
+    }),
 
     awful.key({ mod }, "e", props.openEditor, {
         description = "open an editor", group = "launcher"

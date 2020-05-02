@@ -16,6 +16,9 @@ return function(config, services)
     return os.execute("upower -e | grep -i battery")
   end
 
+  function props.openBrowser()
+    awful.spawn(os.getenv("AWESOME_BROWSER_COMMAND"))
+  end
 
   function props.openFSBrowser()
     awful.spawn(config.fs_browser)
