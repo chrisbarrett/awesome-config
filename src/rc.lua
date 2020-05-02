@@ -113,31 +113,7 @@ return function (config)
   -- Reapply wallpaper when a screen's geometry changes (e.g. different resolution)
   screen.connect_signal("property::geometry", set_wallpaper)
 
-
-  local has_battery = os.execute("upower -e | grep -i battery")
-
-  local battery = has_battery and require("widgets.battery") {
-    widget_text = "${color_on}${AC_BAT}${color_off}",
-    ac_prefix = {
-      { 30,  " ·   " },
-      { 50,  " ··  " },
-      { 80,  " ··· " },
-      { 100, " FULL" },
-    },
-    battery_prefix = {
-      { 5,   "" },
-      { 25,  "" },
-      { 50,  "" },
-      { 75,  "" },
-      { 100, "" },
-    },
-    percent_colors = {
-      { 25, "red" },
-      { 35, "orange" },
-      { 999, "white" },
-    },
-  }
-
+  local battery = require("widgets.battery")(config, props)
   local org_todos = require('widgets.org_todos')(config, props)
   local wifi = require('widgets.wifi')(config, props)
 

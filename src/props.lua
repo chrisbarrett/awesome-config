@@ -11,6 +11,11 @@ return function(config, hooks)
     awful.spawn(config.editor_command)
   end
 
+  function props.hasBattery()
+    return os.execute("upower -e | grep -i battery")
+  end
+
+
   function props.openFSBrowser()
     awful.spawn(config.fs_browser)
   end
