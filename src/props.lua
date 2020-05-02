@@ -25,7 +25,7 @@ return function(config, services)
   end
 
   function props.openFSBrowser()
-    awful.spawn(config.fs_browser)
+    awful.spawn(os.getenv("AWESOME_FILE_MANAGER_COMMAND"))
   end
 
   function props.openTerminal()
