@@ -37,7 +37,7 @@ return function(config, services)
   end
 
   function props.openWifiManager()
-    awful.spawn(config.wifi_manager_command)
+    awful.spawn(os.getenv("AWESOME_WIFI_MANAGER_COMMAND"))
   end
 
   function props.prevSong ()

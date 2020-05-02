@@ -67,6 +67,7 @@ symlinkJoin {
       --set AWESOME_FILE_MANAGER_COMMAND '${gnome3.nautilus}/bin/nautilus' \
       --set AWESOME_LAUNCHER_COMMAND '${rofiCustom}/bin/rofi -show run' \
       --set AWESOME_TERMINAL_COMMAND '${gnome3.gnome-terminal}/bin/gnome-terminal' \
+      --set AWESOME_WIFI_MANAGER_COMMAND 'nm-connection-editor' \
       --add-flags "--config ${awesome-config}/etc/awesome/entrypoint.lua" \
       --add-flags "--search ~/.config/awesome/src" \
       --add-flags "--search ${awesome-config}/etc/awesome" \

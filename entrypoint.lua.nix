@@ -18,7 +18,6 @@ end
 
 local config = {
   desktop_picture = '${./assets/desktop.png}',
-  wifi_manager_command = 'nm-connection-editor',
   toggle_keyboard_command = '${scripts.keyboardToggle}',
   set_keyboard_qwerty = '${scripts.keyboardDvorak}',
   set_keyboard_dvorak = '${scripts.keyboardDvorak}',
