@@ -13,7 +13,7 @@ return function(config, services)
   end
 
   function props.openEditor()
-    awful.spawn(config.editor_command)
+    awful.spawn(os.getenv("EDITOR"))
   end
 
   function props.hasBattery()
