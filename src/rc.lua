@@ -1,7 +1,6 @@
 local awful = require("awful")
 local beautiful = require("beautiful")
 local gears = require("gears")
-local menubar = require("menubar")
 local wibox = require("wibox")
 
 require("awful.autofocus")
