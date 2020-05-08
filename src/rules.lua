@@ -143,6 +143,10 @@ return function (config, keybindings)
   }
 
   function rules.install()
+    client.connect_signal("mouse::enter", function(c)
+      c:emit_signal("request::activate", "mouse_enter", {raise = false})
+    end)
+
     awful.layout.layouts = {
       awful.layout.suit.tile,
       awful.layout.suit.max,
