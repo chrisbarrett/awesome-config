@@ -1,5 +1,5 @@
 { pkgs, scripts }: ''
-require("error_handlers")
+require('error_handlers')
 local awful = require('awful')
 
 -- Prevent clients from being unreachable after screen count changes.
@@ -20,7 +20,7 @@ local config = {
   read_layout_command = '${scripts.keyboardShow}',
 }
 
-require("rc")(config)
+require('rc')(config)
 
 -- Make sure we reload the xprofile so that keyboard repeat settings are loaded.
 awful.spawn.with_shell('~/.xprofile')
