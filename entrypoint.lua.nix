@@ -2,16 +2,6 @@
 require('error_handlers')
 local awful = require('awful')
 
--- Prevent clients from being unreachable after screen count changes.
-client.connect_signal(
-  "manage",
-  function (c)
-    if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
-      awful.placement.no_offscreen(c)
-    end
-  end
-)
-
 local config = {
   desktop_picture = '${./assets/desktop.png}',
   toggle_keyboard_command = '${scripts.keyboardToggle}',
