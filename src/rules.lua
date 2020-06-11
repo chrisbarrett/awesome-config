@@ -58,7 +58,6 @@ tyrannical.tags = {
     class = {
       "Steam",
       "steam",
-      "mono-sgen", -- OpenRA
     },
   },
 }
