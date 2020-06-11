@@ -1,4 +1,4 @@
-local helpers = require("vicious.helpers")
+local helpers = require('vicious.helpers')
 local vicious = require('vicious')
 local wibox = require('wibox')
 

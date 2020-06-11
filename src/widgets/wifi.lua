@@ -1,4 +1,4 @@
-local awful = require("awful")
+local awful = require('awful')
 local vicious = require('vicious')
 local wibox = require('wibox')
 

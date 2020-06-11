@@ -1,5 +1,5 @@
-local awful = require("awful")
-local helpers = require("vicious.helpers")
+local awful = require('awful')
+local helpers = require('vicious.helpers')
 local vicious = require('vicious')
 local wibox = require('wibox')
 
