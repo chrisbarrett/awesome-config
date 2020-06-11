@@ -15,14 +15,21 @@ tyrannical.tags = {
     init = true,
     selected = true,
     fallback = true,
-    class = {"Emacs"},
+    class = {
+      "Emacs",
+      "gcr-prompter",
+    },
   },
   {
     name = "read",
     init = false,
     exclusive = true,
     volatile = true,
-    class = {"chromium", "chromium-browser"},
+    class = {
+      "chromium",
+      "chromium-browser",
+      "gcr-prompter",
+    },
   },
   {
     name = "comms",
