@@ -12,10 +12,6 @@ client.connect_signal(
   end
 )
 
-local function nix_bin(cmd, args)
-  return os.getenv("HOME") .. '/.nix-profile/bin/' .. cmd .. " " .. (args or "")
-end
-
 local config = {
   desktop_picture = '${./assets/desktop.png}',
   toggle_keyboard_command = '${scripts.keyboardToggle}',
